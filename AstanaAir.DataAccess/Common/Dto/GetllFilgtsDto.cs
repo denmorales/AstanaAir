@@ -1,6 +1,6 @@
 ﻿using AstanaAir.Domain.Enum;
 
-namespace AstanaAir.Application.Common.Queries;
+namespace AstanaAir.Application.Common.Dto;
 
 public class GetAllFlightsDto
 {

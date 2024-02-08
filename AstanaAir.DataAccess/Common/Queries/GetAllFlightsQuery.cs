@@ -1,4 +1,5 @@
-﻿using AstanaAir.Infrastructure;
+﻿using AstanaAir.Application.Common.Dto;
+using AstanaAir.Infrastructure;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

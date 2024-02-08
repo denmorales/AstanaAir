@@ -7,6 +7,7 @@ using AstanaAir.Application.Consts;
 using AstanaAir.Domain.Enum;
 using AstanaAir.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
+using AstanaAir.Application.Common.Dto;
 
 namespace AstanaAir.Controllers;
 
@@ -60,7 +61,7 @@ public class FlightsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateFlight(CreateFlightRequest request)
     {
-        var flights = await _mediator.Send(new CreateFlightCommand()
+        var flights = await _mediator.Send(new CreateFlightCommand
         {
             Destination = request.Destination,
             Origin = request.Origin,

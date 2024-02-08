@@ -1,6 +1,6 @@
 using System.Net.Mime;
 using AstanaAir.Application.Common.Commands;
-using AstanaAir.Application.Common.Queries;
+using AstanaAir.Application.Common.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

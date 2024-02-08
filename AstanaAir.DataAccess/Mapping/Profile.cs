@@ -1,4 +1,4 @@
-﻿using AstanaAir.Application.Common.Queries;
+﻿using AstanaAir.Application.Common.Dto;
 using AstanaAir.Domain.Entities;
 
 namespace DataAccess.Mapping

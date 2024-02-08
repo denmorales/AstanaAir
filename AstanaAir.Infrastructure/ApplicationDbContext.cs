@@ -1,10 +1,11 @@
 ﻿using System.Reflection;
+using AstanaAir.Application.Consts;
 using AstanaAir.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AstanaAir.Infrastructure;
 
-public class ApplicationDbContext: DbContext
+public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -24,6 +25,40 @@ public class ApplicationDbContext: DbContext
             .HasOne(e => e.Role)
             .WithMany(r => r.Users)
             .HasForeignKey(k => k.RoleId);
+
+        builder.Entity<User>()
+            .HasData(new[]
+            {
+                new User()
+                {
+                    Id = 1,
+                    Password = "pass1",
+                    RoleId = RoleIds.User,
+                    UserName = "user1"
+                },
+                new User()
+                {
+                    Id = 2,
+                    Password = "pass2",
+                    RoleId = RoleIds.Moderator,
+                    UserName = "moderator1"
+                }
+            });
+
+        builder.Entity<Role>()
+            .HasData(new[]
+            {
+                new Role()
+                {
+                    Id = RoleIds.User,
+                    Code = nameof(RoleIds.User)
+                },
+                new Role()
+                {
+                    Id = RoleIds.Moderator,
+                    Code = nameof(RoleIds.Moderator)
+                },
+            });
 
         base.OnModelCreating(builder);
     }

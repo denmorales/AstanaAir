@@ -3,8 +3,10 @@ using System.Net.Mime;
 using AstanaAir.Application.Common.Commands;
 using MediatR;
 using AstanaAir.Application.Common.Queries;
+using AstanaAir.Application.Consts;
 using AstanaAir.Domain.Enum;
 using AstanaAir.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AstanaAir.Controllers;
 
@@ -32,6 +34,7 @@ public class FlightsController : ControllerBase
     /// <response code="200">Успешно получен список всех рейсов</response>
     /// <response code="400">Ошибка валидации</response>
     /// <response code="500">Во время выполнения произошла ошибка</response>
+    [Authorize]
     [HttpGet("/flights")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetAllFlightsDto), StatusCodes.Status200OK)]
@@ -48,9 +51,10 @@ public class FlightsController : ControllerBase
     /// <summary>
     /// Добавление нового рейса
     /// </summary>
-    /// <response code="200">Успешно добавлен новый рейс</response>
+    /// <response code="201">Успешно добавлен новый рейс</response>
     /// <response code="400">Ошибка валидации</response>
     /// <response code="500">Во время выполнения произошла ошибка</response>
+    [Authorize(Roles = nameof(RoleIds.Moderator))]
     [HttpPost("/flights")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -73,6 +77,7 @@ public class FlightsController : ControllerBase
     /// <response code="200">Успешно изменен статус рейса</response>
     /// <response code="400">Ошибка валидации</response>
     /// <response code="500">Во время выполнения произошла ошибка</response>
+    [Authorize(Roles = nameof(RoleIds.Moderator))]
     [HttpPatch("/flights/{id:int}")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]

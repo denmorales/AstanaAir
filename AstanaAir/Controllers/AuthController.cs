@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using AstanaAir.Application.Common.Commands;
 using AstanaAir.Application.Common.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,21 +25,21 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Получение списка рейсов
+    /// Получение токена авторизации
     /// </summary>
-    /// <response code="200">Успешно получен список всех рейсов</response>
+    /// <response code="200">Успешно получен токен</response>
     /// <response code="400">Ошибка валидации</response>
     /// <response code="500">Во время выполнения произошла ошибка</response>
     [HttpGet("/authorize")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetAllFlightsDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Authorize(string userName, string Password)
+    public async Task<IActionResult> Authorize(string userName, string password)
     {
-        //var flights = await _mediator.Send(new GetAllFlightsQuery()
-        //{
-        //    Destination = destination,
-        //    Origin = origin
-        //});
-        return Ok();
+        var token = await _mediator.Send(new AuthorizeCommand()
+        {
+            Password = password,
+            UserName = userName
+        });
+        return Ok(token);
     }
 }

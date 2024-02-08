@@ -1,6 +1,7 @@
 ﻿using AstanaAir.Domain.Enum;
 using AstanaAir.Infrastructure;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace AstanaAir.Application.Common.Commands;
 
@@ -21,7 +22,9 @@ public class EditFlightCommandHandler : IRequestHandler<EditFlightCommand>
 
     public async Task Handle(EditFlightCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Flights.FindAsync(request.FlightId, cancellationToken);
+        var entity = await _context.Flights
+            .Where(f => f.Id == request.FlightId)
+            .FirstOrDefaultAsync(cancellationToken);
 
         entity!.Status = request.Status;
 

@@ -1,4 +1,5 @@
-﻿using AstanaAir.Domain.Enum;
+﻿using System.ComponentModel.DataAnnotations;
+using AstanaAir.Domain.Enum;
 
 namespace AstanaAir.Domain.Entities;
 
@@ -11,10 +12,12 @@ public class Flight
     /// <summary>
     /// Aэропорт отправления.
     /// </summary>
+    [MaxLength(256)]
     public string Origin { get; set; } = null!;
     /// <summary>
     /// Аэропорт прибытия.
     /// </summary>
+    [MaxLength(256)]
     public string Destination { get; set; } = null!;
     /// <summary>
     /// Время отправления.

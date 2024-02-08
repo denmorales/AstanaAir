@@ -28,6 +28,10 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(k => k.RoleId);
 
         builder.Entity<User>()
+            .HasIndex(x => x.UserName)
+            .IsUnique();
+
+        builder.Entity<User>()
             .HasData(
                 new User()
                 {
@@ -41,6 +45,10 @@ public class ApplicationDbContext : DbContext
                     RoleId = RoleIds.Moderator,
                     UserName = "moderator1"
                 }.HashPassword("pass2"));
+
+        builder.Entity<Role>()
+            .HasIndex(x => x.Code)
+            .IsUnique();
 
         builder.Entity<Role>()
             .HasData(new[]

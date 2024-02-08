@@ -1,4 +1,6 @@
-﻿namespace AstanaAir.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AstanaAir.Domain.Entities;
 
 public class User
 {
@@ -9,6 +11,7 @@ public class User
     /// <summary>
     /// Имя пользователя.
     /// </summary>
+    [MaxLength(256)]
     public string UserName { get; set; } = null!;
     /// <summary>
     /// Id роли.

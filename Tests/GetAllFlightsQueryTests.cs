@@ -5,6 +5,7 @@ using AstanaAir.Infrastructure;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Tests.Infrastructure;
+using Profile = DataAccess.Mapping.Profile;
 
 namespace Tests;
 
@@ -16,7 +17,10 @@ public class GetAllFlightsQueryTests
     [SetUp]
     public void Setup()
     {
-        var mappingConfig = new MapperConfiguration(mc => { });
+        var mappingConfig = new MapperConfiguration(mc =>
+        {
+            mc.AddProfile(new Profile());
+        });
         _mapper = mappingConfig.CreateMapper();
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
@@ -27,8 +31,8 @@ public class GetAllFlightsQueryTests
     {
         var query = new GetAllFlightsQuery()
         {
-            Destination = "Аэропорт1",
-            Origin = "Аэропорт2"
+            Destination = "Аэропорт2",
+            Origin = "Аэропорт1"
         };
         var handler = new GetAllFlightsQueryHandler(_context, _mapper);
 

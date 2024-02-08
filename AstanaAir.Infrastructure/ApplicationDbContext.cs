@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AstanaAir.Application.Consts;
 using AstanaAir.Domain.Entities;
+using AstanaAir.Domain.Enum;
 using AstanaAir.Domain.Extentions;
 using Microsoft.EntityFrameworkCore;
 
@@ -65,6 +66,28 @@ public class ApplicationDbContext : DbContext
                 },
             });
 
+        builder.Entity<Flight>()
+            .HasData(new[]
+            {
+                new Flight()
+                {
+                    Id = 1000,
+                    Origin = "Аэропорт1",
+                    Arrival = DateTimeOffset.Now,
+                    Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
+                    Destination = "Аэропорт2",
+                    Status = Status.InTime
+                },
+                new Flight()
+                {
+                    Id = 1001,
+                    Origin = "Аэропорт3",
+                    Arrival = DateTimeOffset.Now,
+                    Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
+                    Destination = "Аэропорт4",
+                    Status = Status.Cancelled
+                },
+            });
         base.OnModelCreating(builder);
     }
 }

@@ -38,7 +38,7 @@ public class FlightsController : ControllerBase
     [HttpGet("/flights")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetAllFlightsDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllFlights(string origin, string destination)
+    public async Task<IActionResult> GetAllFlights(string? origin, string? destination)
     {
         var flights = await _mediator.Send(new GetAllFlightsQuery()
         {

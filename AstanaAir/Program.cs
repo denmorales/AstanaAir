@@ -1,20 +1,33 @@
+using AstanaAir.Infrastructure;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using AstanaAir.Application;
+using Swashbuckle.AspNetCore.SwaggerGen;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddApplication();
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var ctx = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    ctx.Database.Migrate();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseCors(
+    options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+);
 
 app.UseHttpsRedirection();
 

@@ -8,6 +8,9 @@ using AstanaAir.Domain.Models;
 
 namespace AstanaAir.Controllers;
 
+/// <summary>
+/// Методы доступа к рейсам.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class FlightsController : ControllerBase

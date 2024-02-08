@@ -1,22 +1,22 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
-using AstanaAir.Application.Common.Commands;
-using MediatR;
 using AstanaAir.Application.Common.Queries;
-using AstanaAir.Domain.Enum;
-using AstanaAir.Domain.Models;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
-namespace AstanaAir.Controllers;
+namespace AstanaAir.Web.Controllers;
 
+/// <summary>
+/// Методы авторизации.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
-public class AuthorizationController : ControllerBase
+public class AuthController : ControllerBase
 {
-    private readonly ILogger<AuthorizationController> _logger;
+    private readonly ILogger<AuthController> _logger;
     private readonly IMediator _mediator;
 
-    public AuthorizationController(
-        ILogger<AuthorizationController> logger,
+    public AuthController(
+        ILogger<AuthController> logger,
         IMediator mediator)
     {
         _logger = logger;

@@ -3,6 +3,7 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using AstanaAir.Domain.Authorization;
 using AstanaAir.Domain.Entities;
+using AstanaAir.Domain.Extentions;
 using AstanaAir.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,9 +31,9 @@ public record AuthorizeCommand : IRequest<string>
                 .Include(r => r.Role)
                 .Where(u => u.UserName == request.UserName)
                 .FirstOrDefaultAsync(cancellationToken);
-            return user?.Password != request.Password
-                ? throw new AuthenticationException("Invalid UserName or Password")
-                : CreateJwtToken(user);
+            return user != null && user.PasswordIsValid(request.Password)
+                ? CreateJwtToken(user)
+                : throw new AuthenticationException("Invalid UserName or Password");
         }
 
         private static string CreateJwtToken(User user)

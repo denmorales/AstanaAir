@@ -11,10 +11,6 @@ public class User
     /// </summary>
     public string UserName { get; set; } = null!;
     /// <summary>
-    /// Пароль пользователя.
-    /// </summary>
-    public string Password { get; set; } = null!;
-    /// <summary>
     /// Id роли.
     /// </summary>
     public int RoleId { get; set; }
@@ -22,4 +18,12 @@ public class User
     /// Роль.
     /// </summary>
     public Role Role { get; set; }
+    /// <summary>
+    /// Хэш пароля.
+    /// </summary>
+    public string Hash { get; set; } = null!;
+    /// <summary>
+    /// Соль.
+    /// </summary>
+    public byte[] Salt { get; set; } = null!;
 }

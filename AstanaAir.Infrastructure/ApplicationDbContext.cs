@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AstanaAir.Application.Consts;
 using AstanaAir.Domain.Entities;
+using AstanaAir.Domain.Extentions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AstanaAir.Infrastructure;
@@ -27,23 +28,19 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(k => k.RoleId);
 
         builder.Entity<User>()
-            .HasData(new[]
-            {
+            .HasData(
                 new User()
                 {
                     Id = 1,
-                    Password = "pass1",
                     RoleId = RoleIds.User,
                     UserName = "user1"
-                },
+                }.HashPassword("pass1"),
                 new User()
                 {
                     Id = 2,
-                    Password = "pass2",
                     RoleId = RoleIds.Moderator,
                     UserName = "moderator1"
-                }
-            });
+                }.HashPassword("pass2"));
 
         builder.Entity<Role>()
             .HasData(new[]

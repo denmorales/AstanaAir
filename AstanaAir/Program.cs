@@ -12,6 +12,7 @@ using Serilog;
 using AstanaAir.Web.Filters;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using AstanaAir.Web.Interceptors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,9 +94,15 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 #endregion
+
+builder.Services.AddTransient<DatabaseLogInterceptor>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")!));
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")!);
+    options.AddInterceptors(sp.GetRequiredService<DatabaseLogInterceptor>());
+});
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplication();
 
 

@@ -1,14 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using AstanaAir.Application.Common.Commands;
-using MediatR;
+using AstanaAir.Application.Common.Dto;
 using AstanaAir.Application.Common.Queries;
 using AstanaAir.Application.Consts;
 using AstanaAir.Domain.Models;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using AstanaAir.Application.Common.Dto;
+using Microsoft.AspNetCore.Mvc;
 
-namespace AstanaAir.Controllers;
+namespace AstanaAir.Web.Controllers;
 
 /// <summary>
 /// Методы доступа к рейсам.

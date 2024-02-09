@@ -9,7 +9,10 @@ namespace AstanaAir.Infrastructure;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    }
 
     public DbSet<Flight> Flights => Set<Flight>();
     public DbSet<Role> Roles => Set<Role>();

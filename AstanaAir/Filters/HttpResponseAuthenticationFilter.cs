@@ -18,9 +18,7 @@ public class HttpResponseAuthenticationFilter : IActionFilter, IOrderedFilter
             {
                 StatusCode = StatusCodes.Status401Unauthorized
             };
-
             context.ExceptionHandled = true;
         }
     }
-
 }

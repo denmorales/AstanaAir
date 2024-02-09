@@ -2,6 +2,8 @@ using AstanaAir.Application.Common.Queries;
 using AstanaAir.Infrastructure;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Tests.Infrastructure;
 using Profile = DataAccess.Mapping.Profile;
 
@@ -32,11 +34,13 @@ public class GetAllFlightsQueryTests
             Destination = "Аэропорт2",
             Origin = "Аэропорт1"
         };
-        var handler = new GetAllFlightsQueryHandler(_context, _mapper);
+        var handler = new GetAllFlightsQueryHandler(
+            _context,
+            _mapper,
+            new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions())));
 
         var allFlights = await handler.Handle(query, CancellationToken.None);
 
         Assert.IsNotEmpty(allFlights);
     }
-
 }

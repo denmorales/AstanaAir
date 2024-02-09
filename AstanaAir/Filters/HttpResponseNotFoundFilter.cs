@@ -17,7 +17,6 @@ public class HttpResponseNotFoundFilter : IActionFilter, IOrderedFilter
             {
                 StatusCode = StatusCodes.Status400BadRequest
             };
-
             context.ExceptionHandled = true;
         }
     }

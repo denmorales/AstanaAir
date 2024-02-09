@@ -94,24 +94,26 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 #endregion
-
 builder.Services.AddTransient<DatabaseLogInterceptor>();
 builder.Services.AddEndpointsApiExplorer();
+#region DbContext
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")!);
     options.AddInterceptors(sp.GetRequiredService<DatabaseLogInterceptor>());
 });
+#endregion
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplication();
+#region Cache
 builder.Services.AddMemoryCache();
+#endregion
 
 
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 #region Migrations
 using (var scope = app.Services.CreateScope())
 {
@@ -119,7 +121,6 @@ using (var scope = app.Services.CreateScope())
     ctx.Database.Migrate();
 }
 #endregion
-
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors(

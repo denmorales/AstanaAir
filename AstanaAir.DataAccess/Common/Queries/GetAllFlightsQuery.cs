@@ -31,9 +31,9 @@ public class GetAllFlightsQueryHandler : IRequestHandler<GetAllFlightsQuery, Lis
 
     public async Task<List<GetAllFlightsDto>> Handle(GetAllFlightsQuery request, CancellationToken cancellationToken)
     {
-        return await _cache.GetOrCreateAsync($"{request.Destination}+{request.Origin}", async entry =>
+        return await _cache.GetOrCreateAsync($"{request.Destination} {request.Origin}", async entry =>
         {
-            entry.SlidingExpiration = TimeSpan.FromHours(1);
+            entry.SlidingExpiration = TimeSpan.FromMinutes(10);
             var query = _context.Flights.AsQueryable();
 
             if (!string.IsNullOrEmpty(request.Origin))

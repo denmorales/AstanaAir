@@ -7,7 +7,6 @@ using AstanaAir.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace AstanaAir.Web.Controllers;
 

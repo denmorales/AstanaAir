@@ -36,6 +36,7 @@ public class ApplicationDbContext : DbContext
             .HasIndex(x => x.UserName)
             .IsUnique();
 
+        #region UserDataSeed
         builder.Entity<User>()
             .HasData(
                 new User
@@ -50,11 +51,13 @@ public class ApplicationDbContext : DbContext
                     RoleId = RoleIds.Moderator,
                     UserName = "moderator1"
                 }.HashPassword("pass2"));
+        #endregion
 
         builder.Entity<Role>()
             .HasIndex(x => x.Code)
             .IsUnique();
 
+        #region RoleDataSeed
         builder.Entity<Role>()
             .HasData(new Role
             {
@@ -65,43 +68,47 @@ public class ApplicationDbContext : DbContext
                 Id = RoleIds.Moderator,
                 Code = nameof(RoleIds.Moderator)
             });
+        #endregion
 
+        #region FlightDataSeed
         builder.Entity<Flight>()
             .HasData(new Flight
-            {
-                Id = 1000,
-                Origin = "Аэропорт1",
-                Arrival = DateTimeOffset.Now,
-                Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
-                Destination = "Аэропорт2",
-                Status = Status.InTime
-            }, new Flight
-            {
-                Id = 1001,
-                Origin = "Аэропорт3",
-                Arrival = DateTimeOffset.Now,
-                Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
-                Destination = "Аэропорт4",
-                Status = Status.Cancelled
-            }, new Flight
-            {
-                Id = 1002,
-                Origin = "Внуково",
-                Arrival = DateTimeOffset.Now,
-                Departure = DateTimeOffset.Now + TimeSpan.FromHours(16),
-                Destination = "Магадан",
-                Status = Status.InTime
-            },
-             new Flight
-             {
-                 Id = 1003,
-                 Origin = "Екатеринбург",
-                 Arrival = DateTimeOffset.Now,
-                 Departure = DateTimeOffset.Now + TimeSpan.FromHours(2),
-                 Destination = "Алматы",
-                 Status = Status.InTime
-             });
+                {
+                    Id = 1000,
+                    Origin = "Аэропорт1",
+                    Arrival = DateTimeOffset.Now,
+                    Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
+                    Destination = "Аэропорт2",
+                    Status = Status.InTime
+                }, new Flight
+                {
+                    Id = 1001,
+                    Origin = "Аэропорт3",
+                    Arrival = DateTimeOffset.Now,
+                    Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
+                    Destination = "Аэропорт4",
+                    Status = Status.Cancelled
+                }, new Flight
+                {
+                    Id = 1002,
+                    Origin = "Внуково",
+                    Arrival = DateTimeOffset.Now,
+                    Departure = DateTimeOffset.Now + TimeSpan.FromHours(16),
+                    Destination = "Магадан",
+                    Status = Status.InTime
+                },
+                new Flight
+                {
+                    Id = 1003,
+                    Origin = "Екатеринбург",
+                    Arrival = DateTimeOffset.Now,
+                    Departure = DateTimeOffset.Now + TimeSpan.FromHours(2),
+                    Destination = "Алматы",
+                    Status = Status.InTime
+                });
+        #endregion
 
+        #region AirportsDataSeed
         builder.Entity<Airport>()
             .HasData(new Airport
             {
@@ -134,6 +141,8 @@ public class ApplicationDbContext : DbContext
                 Name = "Магадан",
                 Offset = 11
             });
+        #endregion
+
         base.OnModelCreating(builder);
     }
 }

@@ -1,6 +1,4 @@
-﻿using AstanaAir.Domain.Enum;
-
-namespace AstanaAir.Domain.Models;
+﻿namespace AstanaAir.Domain.Models;
 
 public class AuthorizeRequest
 {

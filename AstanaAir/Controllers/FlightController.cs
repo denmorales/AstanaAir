@@ -4,7 +4,6 @@ using AstanaAir.Application.Common.Commands;
 using MediatR;
 using AstanaAir.Application.Common.Queries;
 using AstanaAir.Application.Consts;
-using AstanaAir.Domain.Enum;
 using AstanaAir.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using AstanaAir.Application.Common.Dto;

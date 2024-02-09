@@ -1,4 +1,3 @@
-using System.Security.Authentication;
 using AstanaAir.Application.Common.Commands;
 using AstanaAir.Domain.Enum;
 using AstanaAir.Infrastructure;

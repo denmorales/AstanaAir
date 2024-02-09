@@ -6,9 +6,9 @@ namespace AstanaAir.Web.Validation;
 /// <summary>
 /// Валидация запрос добавления нового рейса.
 /// </summary>
-public class CreateFligtsValidator : AbstractValidator<CreateFlightRequest>
+public class CreateFlightsValidator : AbstractValidator<CreateFlightRequest>
 {
-    public CreateFligtsValidator()
+    public CreateFlightsValidator()
     {
         RuleFor(x => x.Origin)
             .NotEmpty()

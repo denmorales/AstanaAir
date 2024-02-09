@@ -37,8 +37,8 @@ public class CreateFlightCommandHandler : IRequestHandler<CreateFlightCommand, i
         {
             Origin = request.Origin,
             Destination = request.Destination,
-            Departure = new DateTimeOffset(request.Departure,TimeSpan.FromHours(originAirport.Offset)),
-            Arrival = new DateTimeOffset(request.Arrival, TimeSpan.FromHours(destinationAirport.Offset)),
+            Departure = new DateTimeOffset(request.Departure.ToUniversalTime(),TimeSpan.FromHours(originAirport.Offset)),
+            Arrival = new DateTimeOffset(request.Arrival.ToUniversalTime(), TimeSpan.FromHours(destinationAirport.Offset)),
             Status = request.Status,
         };
 

@@ -39,7 +39,7 @@ public class FlightsController : ControllerBase
     [HttpGet("/flights")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetAllFlightsDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllFlights(string? origin, string? destination)
+    public async Task<IActionResult> GetAllFlights(string destination, string origin)
     {
         var flights = await _mediator.Send(new GetAllFlightsQuery()
         {
@@ -56,7 +56,7 @@ public class FlightsController : ControllerBase
     /// <response code="400">Ошибка валидации</response>
     /// <response code="500">Во время выполнения произошла ошибка</response>
     [Authorize(Roles = nameof(RoleIds.Moderator))]
-    [HttpPost("/flights")]
+    [HttpPost("/flight")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateFlight(CreateFlightRequest request)
@@ -83,15 +83,19 @@ public class FlightsController : ControllerBase
     /// <response code="400">Ошибка валидации</response>
     /// <response code="500">Во время выполнения произошла ошибка</response>
     [Authorize(Roles = nameof(RoleIds.Moderator))]
-    [HttpPatch("/flights/{id:int}")]
+    [HttpPatch("/flight")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateFlightStatus(int id, Status status)
+    public async Task<IActionResult> EditFlightStatus(EditFlightRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
         await _mediator.Send(new EditFlightCommand()
         {
-            FlightId = id,
-            Status = status
+            FlightId = request.Id,
+            Status = request.Status
         });
         return Ok();
     }

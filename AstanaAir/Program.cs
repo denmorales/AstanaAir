@@ -16,6 +16,8 @@ using FluentValidation;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthorization();
+
+#region Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -30,6 +32,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
         };
     });
+#endregion
+#region Controllers
 builder.Services.AddControllers(options =>
     {
         options.Filters.Add<HttpResponseAuthenticationFilter>();
@@ -39,18 +43,19 @@ builder.Services.AddControllers(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+#endregion
+#region Validation
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+#endregion
+#region Logger
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
     .CreateLogger();
 builder.Logging.AddSerilog(logger);
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")!));
-builder.Services.AddApplication();
-builder.Services.AddEndpointsApiExplorer();
+#endregion
+#region SwaggerOptions
 builder.Services.AddSwaggerGen(c =>
 {
     c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["controller"]}_{e.HttpMethod}");
@@ -79,7 +84,6 @@ builder.Services.AddSwaggerGen(c =>
                 Scheme = "oauth2",
                 Name = "Bearer",
                 In = ParameterLocation.Header,
-
             },
             new List<string>()
         }
@@ -88,16 +92,25 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
 });
+#endregion
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")!));
+builder.Services.AddApplication();
+
 
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+#region Migrations
 using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     ctx.Database.Migrate();
 }
+#endregion
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -105,7 +118,5 @@ app.UseCors(
     options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
 );
 app.UseHttpsRedirection();
-
 app.MapControllers();
-
 app.Run();

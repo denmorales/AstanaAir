@@ -80,7 +80,24 @@ public class ApplicationDbContext : DbContext
                 Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
                 Destination = "Аэропорт4",
                 Status = Status.Cancelled
-            });
+            }, new Flight
+            {
+                Id = 1002,
+                Origin = "Внуково",
+                Arrival = DateTimeOffset.Now,
+                Departure = DateTimeOffset.Now + TimeSpan.FromHours(16),
+                Destination = "Магадан",
+                Status = Status.InTime
+            },
+             new Flight
+             {
+                 Id = 1003,
+                 Origin = "Екатеринбург",
+                 Arrival = DateTimeOffset.Now,
+                 Departure = DateTimeOffset.Now + TimeSpan.FromHours(2),
+                 Destination = "Астана",
+                 Status = Status.InTime
+             });
 
         builder.Entity<Airport>()
             .HasData(new Airport

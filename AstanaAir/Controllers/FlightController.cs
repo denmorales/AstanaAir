@@ -7,6 +7,7 @@ using AstanaAir.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AstanaAir.Web.Controllers;
 
@@ -17,14 +18,11 @@ namespace AstanaAir.Web.Controllers;
 [Route("[controller]")]
 public class FlightsController : ControllerBase
 {
-    private readonly ILogger<FlightsController> _logger;
     private readonly IMediator _mediator;
 
     public FlightsController(
-        ILogger<FlightsController> logger,
         IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator;
     }
 
@@ -38,7 +36,7 @@ public class FlightsController : ControllerBase
     [HttpGet("/flights")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetAllFlightsDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllFlights(string destination, string origin)
+    public async Task<IActionResult> GetAllFlights(string? destination, string? origin)
     {
         var flights = await _mediator.Send(new GetAllFlightsQuery()
         {

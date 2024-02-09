@@ -3,6 +3,7 @@ using AstanaAir.Infrastructure;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AstanaAir.Application.Common.Queries;
 
@@ -16,31 +17,40 @@ public class GetAllFlightsQueryHandler : IRequestHandler<GetAllFlightsQuery, Lis
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IMemoryCache _cache;
 
-    public GetAllFlightsQueryHandler(ApplicationDbContext context, IMapper mapper)
+    public GetAllFlightsQueryHandler(
+        ApplicationDbContext context,
+        IMapper mapper,
+        IMemoryCache cache)
     {
         _context = context;
         _mapper = mapper;
+        _cache = cache;
     }
 
     public async Task<List<GetAllFlightsDto>> Handle(GetAllFlightsQuery request, CancellationToken cancellationToken)
     {
-        var query = _context.Flights.AsQueryable();
-
-        if (!string.IsNullOrEmpty(request.Origin))
+        return await _cache.GetOrCreateAsync($"{request.Destination}+{request.Origin}", async entry =>
         {
-            query = query.Where(o => o.Origin == request.Origin);
-        }
+            entry.SlidingExpiration = TimeSpan.FromHours(1);
+            var query = _context.Flights.AsQueryable();
 
-        if (!string.IsNullOrEmpty(request.Destination))
-        {
-            query = query.Where(o => o.Destination == request.Destination);
-        }
+            if (!string.IsNullOrEmpty(request.Origin))
+            {
+                query = query.Where(o => o.Origin == request.Origin);
+            }
 
-        var flights = await query
-            .OrderBy(x => x.Arrival)
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
-        return _mapper.Map<List<GetAllFlightsDto>>(flights);
+            if (!string.IsNullOrEmpty(request.Destination))
+            {
+                query = query.Where(o => o.Destination == request.Destination);
+            }
+
+            var flights = await query
+                .OrderBy(x => x.Arrival)
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
+            return _mapper.Map<List<GetAllFlightsDto>>(flights);
+        });
     }
 }

@@ -14,14 +14,11 @@ namespace AstanaAir.Web.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly ILogger<AuthController> _logger;
     private readonly IMediator _mediator;
 
     public AuthController(
-        ILogger<AuthController> logger,
         IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator;
     }
 

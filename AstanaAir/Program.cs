@@ -104,6 +104,7 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplication();
+builder.Services.AddMemoryCache();
 
 
 var app = builder.Build();

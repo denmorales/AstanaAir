@@ -32,6 +32,6 @@ public class CreateFlightCommandTests
 
         var id = await handler.Handle(command, CancellationToken.None);
 
-        Assert.NotNull(id);
+        Assert.NotZero(id);
     }
 }

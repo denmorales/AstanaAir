@@ -18,6 +18,5 @@ public class AuthorizeRequestValidator : AbstractValidator<AuthorizeRequest>
             .NotEmpty()
             .MaximumLength(40)
             .WithMessage("The body of the post cannot exceed 40 characters");
-       
     }
 }

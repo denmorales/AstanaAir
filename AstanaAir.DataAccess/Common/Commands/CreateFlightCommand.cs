@@ -1,5 +1,6 @@
 ﻿using AstanaAir.Domain.Entities;
 using AstanaAir.Domain.Enum;
+using AstanaAir.Domain.Extentions;
 using AstanaAir.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -37,8 +38,8 @@ public class CreateFlightCommandHandler : IRequestHandler<CreateFlightCommand, i
         {
             Origin = request.Origin,
             Destination = request.Destination,
-            Departure = new DateTimeOffset(request.Departure.ToUniversalTime(),TimeSpan.FromHours(originAirport.Offset)),
-            Arrival = new DateTimeOffset(request.Arrival.ToUniversalTime(), TimeSpan.FromHours(destinationAirport.Offset)),
+            Departure = request.Departure.FromLocalTime(originAirport.Offset),
+            Arrival = request.Arrival.FromLocalTime(destinationAirport.Offset),
             Status = request.Status,
         };
 

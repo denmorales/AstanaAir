@@ -1,17 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using DataAccess.Mapping;
 
-namespace AstanaAir.Application
+namespace AstanaAir.Application;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
-        {
-            services.AddAutoMapper(typeof(Profile));
-            services.AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
+        services.AddAutoMapper(typeof(Profile));
+        services.AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
 
-            return services;
+        return services;
 
-        }
     }
 }

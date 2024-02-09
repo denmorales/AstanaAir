@@ -4,45 +4,44 @@ using AstanaAir.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Tests.Infrastructure;
 
-namespace Tests
+namespace Tests;
+
+public class AuthorizeCommandTests
 {
-    public class AuthorizeCommandTests
+    private readonly ApplicationDbContext _context = new InMemoryContext(new DbContextOptions<ApplicationDbContext>());
+
+    [SetUp]
+    public void Setup()
     {
-        private readonly ApplicationDbContext _context = new InMemoryContext(new DbContextOptions<ApplicationDbContext>());
+        _context.Database.EnsureDeleted();
+        _context.Database.EnsureCreated();
+    }
 
-        [SetUp]
-        public void Setup()
+    [Test]
+    public async Task AuthorizeCommandHandler_Handle_Success()
+    {
+        var command = new AuthorizeCommand()
         {
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
-        }
+            Password = "pass1",
+            UserName = "user1"
+        };
+        var handler = new AuthorizeCommand.AuthorizeCommandHandler(_context);
 
-        [Test]
-        public async Task AuthorizeCommandHandler_Handle_Success()
+        var token = await handler.Handle(command, CancellationToken.None);
+
+        Assert.NotNull(token);
+    }
+
+    [Test]
+    public async Task AuthorizeCommandHandler_Handle_Failed()
+    {
+        var command = new AuthorizeCommand()
         {
-            var command = new AuthorizeCommand()
-            {
-                Password = "pass1",
-                UserName = "user1"
-            };
-            var handler = new AuthorizeCommand.AuthorizeCommandHandler(_context);
+            Password = "notValidPassword",
+            UserName = "user1"
+        };
+        var handler = new AuthorizeCommand.AuthorizeCommandHandler(_context);
 
-            var token = await handler.Handle(command, CancellationToken.None);
-
-            Assert.NotNull(token);
-        }
-
-        [Test]
-        public async Task AuthorizeCommandHandler_Handle_Failed()
-        {
-            var command = new AuthorizeCommand()
-            {
-                Password = "notValidPassword",
-                UserName = "user1"
-            };
-            var handler = new AuthorizeCommand.AuthorizeCommandHandler(_context);
-
-           Assert.ThrowsAsync<AuthenticationException>(async () => await handler.Handle(command, CancellationToken.None));
-        }
+        Assert.ThrowsAsync<AuthenticationException>(async () => await handler.Handle(command, CancellationToken.None));
     }
 }

@@ -61,6 +61,10 @@ public class FlightsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateFlight(CreateFlightRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
         var flights = await _mediator.Send(new CreateFlightCommand
         {
             Destination = request.Destination,

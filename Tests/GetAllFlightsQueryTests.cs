@@ -1,5 +1,3 @@
-using System.Security.Authentication;
-using AstanaAir.Application.Common.Commands;
 using AstanaAir.Application.Common.Queries;
 using AstanaAir.Infrastructure;
 using AutoMapper;

@@ -95,7 +95,7 @@ public class ApplicationDbContext : DbContext
                  Origin = "Екатеринбург",
                  Arrival = DateTimeOffset.Now,
                  Departure = DateTimeOffset.Now + TimeSpan.FromHours(2),
-                 Destination = "Астана",
+                 Destination = "Алматы",
                  Status = Status.InTime
              });
 

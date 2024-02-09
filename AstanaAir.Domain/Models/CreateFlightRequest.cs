@@ -6,7 +6,7 @@ public class CreateFlightRequest
 {
     public string Origin { get; set; }
     public string Destination { get; set; }
-    public DateTimeOffset Departure { get; set; }
-    public DateTimeOffset Arrival { get; set; }
+    public DateTime Departure { get; set; }
+    public DateTime Arrival { get; set; }
     public Status Status { get; set; }
 }

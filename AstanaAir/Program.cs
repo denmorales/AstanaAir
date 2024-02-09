@@ -32,7 +32,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddControllers(options =>
     {
-        options.Filters.Add<HttpResponseExceptionFilter>();
+        options.Filters.Add<HttpResponseAuthenticationFilter>();
+        options.Filters.Add<HttpResponseNotFoundFilter>();
     })
     .AddJsonOptions(options =>
     {

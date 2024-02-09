@@ -14,6 +14,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Flight> Flights => Set<Flight>();
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<User> Users => Set<User>();
+    public DbSet<Airport> Airports => Set<Airport>();
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
@@ -34,13 +35,13 @@ public class ApplicationDbContext : DbContext
 
         builder.Entity<User>()
             .HasData(
-                new User()
+                new User
                 {
                     Id = 1,
                     RoleId = RoleIds.User,
                     UserName = "user1"
                 }.HashPassword("pass1"),
-                new User()
+                new User
                 {
                     Id = 2,
                     RoleId = RoleIds.Moderator,
@@ -52,41 +53,66 @@ public class ApplicationDbContext : DbContext
             .IsUnique();
 
         builder.Entity<Role>()
-            .HasData(new[]
+            .HasData(new Role
             {
-                new Role()
-                {
-                    Id = RoleIds.User,
-                    Code = nameof(RoleIds.User)
-                },
-                new Role()
-                {
-                    Id = RoleIds.Moderator,
-                    Code = nameof(RoleIds.Moderator)
-                },
+                Id = RoleIds.User,
+                Code = nameof(RoleIds.User)
+            }, new Role
+            {
+                Id = RoleIds.Moderator,
+                Code = nameof(RoleIds.Moderator)
             });
 
         builder.Entity<Flight>()
-            .HasData(new[]
+            .HasData(new Flight
             {
-                new Flight()
-                {
-                    Id = 1000,
-                    Origin = "Аэропорт1",
-                    Arrival = DateTimeOffset.Now,
-                    Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
-                    Destination = "Аэропорт2",
-                    Status = Status.InTime
-                },
-                new Flight()
-                {
-                    Id = 1001,
-                    Origin = "Аэропорт3",
-                    Arrival = DateTimeOffset.Now,
-                    Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
-                    Destination = "Аэропорт4",
-                    Status = Status.Cancelled
-                },
+                Id = 1000,
+                Origin = "Аэропорт1",
+                Arrival = DateTimeOffset.Now,
+                Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
+                Destination = "Аэропорт2",
+                Status = Status.InTime
+            }, new Flight
+            {
+                Id = 1001,
+                Origin = "Аэропорт3",
+                Arrival = DateTimeOffset.Now,
+                Departure = DateTimeOffset.Now + TimeSpan.FromHours(12),
+                Destination = "Аэропорт4",
+                Status = Status.Cancelled
+            });
+
+        builder.Entity<Airport>()
+            .HasData(new Airport
+            {
+                Id = 1,
+                Code = "VNK",
+                Name = "Внуково",
+                Offset = 3,
+            }, new Airport
+            {
+                Id = 2,
+                Code = "EKB",
+                Name = "Екатеринбург",
+                Offset = 5
+            }, new Airport
+            {
+                Id = 3,
+                Code = "SRT",
+                Name = "Саратов",
+                Offset = 4
+            }, new Airport
+            {
+                Id = 4,
+                Code = "ALM",
+                Name = "Алматы",
+                Offset = 6
+            }, new Airport
+            {
+                Id = 5,
+                Code = "MGD",
+                Name = "Магадан",
+                Offset = 11
             });
         base.OnModelCreating(builder);
     }

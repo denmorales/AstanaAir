@@ -4,7 +4,7 @@ using System.Security.Authentication;
 
 namespace AstanaAir.Web.Filters;
 
-public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
+public class HttpResponseAuthenticationFilter : IActionFilter, IOrderedFilter
 {
     public int Order => int.MaxValue - 10;
 
@@ -22,4 +22,5 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
             context.ExceptionHandled = true;
         }
     }
+
 }

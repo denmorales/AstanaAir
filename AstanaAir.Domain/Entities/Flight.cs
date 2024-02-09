@@ -20,11 +20,11 @@ public class Flight
     [MaxLength(256)]
     public string Destination { get; set; } = null!;
     /// <summary>
-    /// Время отправления.
+    /// Время отправления локальное.
     /// </summary>
     public DateTimeOffset Departure { get; set; }
     /// <summary>
-    /// Время прибытия.
+    /// Время прибытия локальное.
     /// </summary>
     public DateTimeOffset Arrival { get; set; }
     /// <summary>

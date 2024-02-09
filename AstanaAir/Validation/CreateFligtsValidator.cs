@@ -27,7 +27,7 @@ public class CreateFligtsValidator : AbstractValidator<CreateFlightRequest>
         RuleFor(x => x.Status)
             .NotNull();
     }
-    private static bool BeAValidDate(DateTimeOffset date)
+    private static bool BeAValidDate(DateTime date)
     {
         return !date.Equals(default);
     }

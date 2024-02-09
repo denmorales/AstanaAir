@@ -2,6 +2,7 @@
 using AstanaAir.Domain.Enum;
 using AstanaAir.Infrastructure;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace AstanaAir.Application.Common.Commands;
 
@@ -9,8 +10,8 @@ public record CreateFlightCommand : IRequest<int>
 {
     public string Origin { get; set; } = null!;
     public string Destination { get; set; } = null!;
-    public DateTimeOffset Departure { get; set; }
-    public DateTimeOffset Arrival { get; set; }
+    public DateTime Departure { get; set; }
+    public DateTime Arrival { get; set; }
     public Status Status { get; set; }
 }
 
@@ -25,12 +26,19 @@ public class CreateFlightCommandHandler : IRequestHandler<CreateFlightCommand, i
 
     public async Task<int> Handle(CreateFlightCommand request, CancellationToken cancellationToken)
     {
-        var entity = new Flight()
+        var originAirport = await _context.Airports
+            .Where(i => i.Name == request.Origin)
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new InvalidDataException();
+        var destinationAirport = await _context.Airports
+            .Where(i => i.Name == request.Destination)
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new InvalidDataException();
+
+        var entity = new Flight
         {
             Origin = request.Origin,
             Destination = request.Destination,
-            Departure = request.Departure,
-            Arrival = request.Arrival,
+            Departure = new DateTimeOffset(request.Departure,TimeSpan.FromHours(originAirport.Offset)),
+            Arrival = new DateTimeOffset(request.Arrival, TimeSpan.FromHours(destinationAirport.Offset)),
             Status = request.Status,
         };
 
